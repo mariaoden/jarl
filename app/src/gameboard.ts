@@ -12,9 +12,9 @@ module Jarl {
 			return this.gameboard;
 		}
 		
-	}
+	};
 	
 	export interface GameboardType {
 		gameboard : Array<Array<number>>;
-	} 
-}
+	};
+};
