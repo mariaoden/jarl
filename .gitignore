@@ -3,3 +3,4 @@ typings*
 .vscode*
 .DS_Store
 .editorconfig
+build*
