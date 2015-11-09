@@ -3,8 +3,10 @@
 describe('gameboard', function() {
 	var gameboard : Jarl.GameboardType;
 	for (var i = 0; i < 6; i++) {
-		gameboard[i] = [0, 0, 0, 0, 0, 0];
-	}
+		for (var j = 0; j < 6; j++) {
+			gameboard[i,j] = 0;
+		}
+	} 
 	it('should provide a gameboard', function() {
 		expect(new Jarl.Gameboard().getGameboard()).toEqual(gameboard);
 	});
