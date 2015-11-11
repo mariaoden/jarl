@@ -7,7 +7,7 @@ module Jarl {
 			for (var i = 0; i < 6; i++) {
 				this.gameboard[i] = Array<BoardSquareInterface>();
 				for (var j = 0; j < 6; j++) {					
-					this.gameboard[i][j].setBoardSquare(false,defaultMarker);
+					this.gameboard[i][j].setBoardSquare(false, defaultMarker);
 				}
 			} 
 		}
