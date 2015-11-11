@@ -2,19 +2,16 @@
 /// <reference path="../app/src/gameboard.ts" />
 describe('gameboard', function() {
 	
-	var gameboard = new Jarl.Gameboard(); 
-	var testGameboard;
-	
-	for (var i = 0; i < 6; i++) {
-		testGameboard[i] = [];
-		for (var j = 0; j < 6; j++) {
-			testGameboard[i][j] = 0;
-		}
-	}
+	var gameboard = new Jarl.Gameboard().getGameboard(); 
 	
 	it('should provide a gameboard', function() {
-		expect(gameboard.getGameboard()).toEqual(testGameboard);
-		expect(1).toEqual(1);
+		for (var i = 0; i < 6; i ++) {
+			for (var j = 0; j < 6; j++) {
+				expect(gameboard[i][j].getMarker().color).toEqual(2);
+				expect(gameboard[i][j].getMarker().sort).toEqual(2);
+				expect(gameboard[i][j].getOccupied()).toEqual(false);
+			}
+		}
 	});
 	
 });
