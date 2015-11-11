@@ -1,14 +1,20 @@
-// <reference path="../typings/jasmine/jasmine.d.ts" />
-// <reference path="../src/gameboard.ts" />
+/// <reference path="../typings/jasmine/jasmine.d.ts" />
+/// <reference path="../app/src/gameboard.ts" />
 describe('gameboard', function() {
-	var gameboard : Jarl.GameboardType;
+	
+	var gameboard = new Jarl.Gameboard(); 
+	var testGameboard;
+	
 	for (var i = 0; i < 6; i++) {
+		testGameboard[i] = [];
 		for (var j = 0; j < 6; j++) {
-			gameboard[i,j] = 0;
+			testGameboard[i][j] = 0;
 		}
-	} 
+	}
+	
 	it('should provide a gameboard', function() {
-		expect(new Jarl.Gameboard().getGameboard()).toEqual(gameboard);
+		expect(gameboard.getGameboard()).toEqual(testGameboard);
+		expect(1).toEqual(1);
 	});
 	
 });
