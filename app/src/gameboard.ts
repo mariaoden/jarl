@@ -1,13 +1,14 @@
 module Jarl {
 	export class Gameboard {
-		private gameboard = Array<Array<BoardSquareInterface>>();
+		private gameboard : Array<Array<BoardSquareInterface>> = [];
 		
 		constructor() {
 			var defaultMarker : Marker = {color : Color.Undefined, sort : SortOfMarker.Undefined};
 			for (var i = 0; i < 6; i++) {
-				this.gameboard[i] = Array<BoardSquareInterface>();
-				for (var j = 0; j < 6; j++) {					
-					this.gameboard[i][j].setBoardSquare(false, defaultMarker);
+				this.gameboard[i] = new Array<BoardSquareInterface>();
+				for (var j = 0; j < 6; j++) {
+					this.gameboard[i][j] = new BoardSquare();
+					//this.gameboard[i][j].setBoardSquare(false, defaultMarker);
 				}
 			} 
 		}
@@ -18,8 +19,8 @@ module Jarl {
 		
 	};
 	
-	enum Color {White = 0, Black = 1, Undefined = 2};
-	enum SortOfMarker {Jarl = 0, Freeman = 1, Undefined = 2};
+	export enum Color {White, Black, Undefined};
+	export enum SortOfMarker {Jarl, Freeman, Undefined};
 	
 	export interface Marker {
 		color : Color;
@@ -31,7 +32,7 @@ module Jarl {
 		setBoardSquare(occupied_ : boolean, marker_ : Marker);		 
 	}
 	
-	class BoardSquare implements BoardSquareInterface {
+	export class BoardSquare implements BoardSquareInterface {
 		private occupied : boolean;
 		private marker : Marker;
 		constructor() {
