@@ -5,6 +5,7 @@
   "main": "app/build/index.js",
   "dependencies": {},
   "devDependencies": {
+    "bower": "^1.6.5",
     "gulp": "^3.6.2",
     "gulp-shell": "^0.4.2",
     "gulp-tsc": "^0.10.1",
