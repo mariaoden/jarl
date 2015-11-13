@@ -2,6 +2,7 @@ module Jarl {
 	export interface PlayerInterface {
 		getAvailableTiles() : Array<Tile>;
 		addLostTile(lostTile : Tile) : Number;
+		getLostTiles() : Array<Tile>;
 		drawTileFromBag() : Array<Tile>; //Draws a random Tile from the bag and adds it to availableTiles and returns availableTiles
 	}
 	
@@ -16,6 +17,7 @@ module Jarl {
 		constructor(color_ : Color) {
 			this.jarlTile = {color : color_, sort : SortOfTile.Jarl};
 			this.freeman =  {color : color_, sort : SortOfTile.Freeman};
+			// All tiles must be unique, will not work in the future
 			this.tilesInBag = [this.freeman, this.freeman, this.freeman, this.freeman];
 			this.availableTiles = [this.jarlTile, this.freeman, this.freeman];
 			this.lostTiles = [];
@@ -30,13 +32,24 @@ module Jarl {
 			return nbrOfLostTiles;
 		};
 		
+		public getLostTiles() : Array<Tile> {
+			return this.lostTiles;
+		}
+		
 		public drawTileFromBag() : Array<Tile> {
 			var tile : Tile[];
 			var index = Math.floor(Math.random() * this.tilesInBag.length);
-			tile = this.tilesInBag.splice(index, 1); // returns only one tile, hence tile[0] can be used in next step
-			this.availableTiles.push(tile[0]);
-			
+			if (this.tilesInBag.length > 0) {
+				tile = this.tilesInBag.splice(index, 1); 
+				this.availableTiles.push(tile[0]);
+			} else {
+				throw new EmptyBagException();
+			}						
 			return this.availableTiles; 
 		};
 	};
+	
+	export function EmptyBagException() {
+		console.log('The bag is empty no more tiles can be drawn')
+	}
 };
