@@ -1,14 +1,14 @@
 module Jarl {
 	export interface PlayerInterface {
-		getAvailableTiles() : Array<Tile>;
+		getStartupTiles() : Array<Tile>;
 		addLostTile(lostTile : Tile) : Number;
 		getLostTiles() : Array<Tile>;
-		drawTileFromBag() : Array<Tile>; //Draws a random Tile from the bag and adds it to availableTiles and returns availableTiles
+		drawTileFromBag() : Tile; //Draws a random Tile from the bag and adds it to startupTiles and returns startupTiles
 	}
 	
 	export class Player implements PlayerInterface{
 		private lostTiles : Array<Tile>;
-		private availableTiles : Array<Tile>;
+		private startupTiles : Array<Tile>;
 		private tilesInBag : Array<Tile>;
 		
 		private jarlTile : Tile;
@@ -19,12 +19,12 @@ module Jarl {
 			this.freeman =  {color : color_, sort : SortOfTile.Freeman};
 			// All tiles must be unique, will not work in the future
 			this.tilesInBag = [this.freeman, this.freeman, this.freeman, this.freeman];
-			this.availableTiles = [this.jarlTile, this.freeman, this.freeman];
+			this.startupTiles = [this.jarlTile, this.freeman, this.freeman];
 			this.lostTiles = [];
 		};
 		
-		public getAvailableTiles() : Array<Tile> {
-			return this.availableTiles;
+		public getStartupTiles() : Array<Tile> {
+			return this.startupTiles;
 		};
 		
 		public addLostTile(lostTile : Tile) : Number {
@@ -36,20 +36,21 @@ module Jarl {
 			return this.lostTiles;
 		}
 		
-		public drawTileFromBag() : Array<Tile> {
+		public drawTileFromBag() : Tile {
 			var tile : Tile[];
 			var index = Math.floor(Math.random() * this.tilesInBag.length);
 			if (this.tilesInBag.length > 0) {
 				tile = this.tilesInBag.splice(index, 1); 
-				this.availableTiles.push(tile[0]);
+				return tile[0];
 			} else {
+				return null; // is this needed???
 				throw new EmptyBagException();
 			}						
-			return this.availableTiles; 
+ 
 		};
 	};
 	
 	export function EmptyBagException() {
-		console.log('The bag is empty no more tiles can be drawn')
+		console.log('The bag is empty no more tiles can be drawn');
 	}
 };

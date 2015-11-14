@@ -3,7 +3,7 @@ module Jarl {
 		private gameboard : Array<Array<BoardSquareInterface>> = [];
 		
 		constructor() {
-			var defaultTile : Tile = {color : Color.Undefined, sort : SortOfTile.Undefined};
+			var defaultTile : Tile = {color : Color.Undefined, tileType : TypeOfTile.Undefined};
 			for (var i = 0; i < 6; i++) {
 				this.gameboard[i] = new Array<BoardSquareInterface>();
 				for (var j = 0; j < 6; j++) {
@@ -19,11 +19,11 @@ module Jarl {
 	};
 	
 	export enum Color {White, Black, Undefined};
-	export enum SortOfTile {Jarl, Freeman, Undefined};
+	export enum TypeOfTile {Jarl, Freeman, Undefined};
 	
 	export interface Tile {
 		color : Color;
-		sort : SortOfTile; 
+		tileType : TypeOfTile; 
 	}
 	export interface BoardSquareInterface {
 		getOccupied() : boolean;
@@ -36,7 +36,7 @@ module Jarl {
 		private tile : Tile;
 		constructor() {
 			this.occupied = false;
-			this.tile = {color : Color.Undefined, sort : SortOfTile.Undefined};
+			this.tile = {color : Color.Undefined, tileType : TypeOfTile.Undefined};
 		}
 		setBoardSquare(occupied_ : boolean, tile_ : Tile) {
 			this.occupied = occupied_;
