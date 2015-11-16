@@ -16,6 +16,18 @@ module Jarl {
 			return this.gameboard;
 		}
 		
+		public cleanGameboard() {
+			for (var i = 0; i < 6; i++) {
+				for (var j = 0; j < 6; j++) {
+					this.gameboard[i][j].resetBoardSquare();
+				}
+			}
+		}
+		
+		public addTileToGameboard(tile : Tile, row :number, column : number) {
+			
+		}
+		
 	};
 	
 	export enum Color {White, Black, Undefined};
@@ -28,7 +40,8 @@ module Jarl {
 	export interface BoardSquareInterface {
 		getOccupied() : boolean;
 		getTile() : Tile;
-		setBoardSquare(occupied_ : boolean, tile_ : Tile);		 
+		setBoardSquare(occupied_ : boolean, tile_ : Tile);	
+		resetBoardSquare();
 	}
 	
 	export class BoardSquare implements BoardSquareInterface {
@@ -43,6 +56,12 @@ module Jarl {
 			this.tile = tile_;
 			// Add Error message if occupied is false and tile is not undefined, or overwrite incomming tile
 		}	
+		
+		resetBoardSquare() {
+			this.occupied = false;
+			this.tile = {color : Color.Undefined, tileType : TypeOfTile.Undefined};
+		}
+		
 		getOccupied() : boolean {
 			return this.occupied;
 		}	

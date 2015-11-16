@@ -15,8 +15,8 @@ module Jarl {
 		private freeman : Tile;
 		
 		constructor(color_ : Color) {
-			this.jarlTile = {color : color_, sort : SortOfTile.Jarl};
-			this.freeman =  {color : color_, sort : SortOfTile.Freeman};
+			this.jarlTile = {color : color_, tileType : TypeOfTile.Jarl};
+			this.freeman =  {color : color_, tileType : TypeOfTile.Freeman};
 			// All tiles must be unique, will not work in the future
 			this.tilesInBag = [this.freeman, this.freeman, this.freeman, this.freeman];
 			this.startupTiles = [this.jarlTile, this.freeman, this.freeman];
