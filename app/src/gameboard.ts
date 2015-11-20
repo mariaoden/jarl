@@ -12,8 +12,9 @@ module Jarl {
 			} 
 		}
 		
+		// NOt used right now
 		private isBoardEmpty() : boolean {
-			var occupied : boolean[];
+			var occupied : boolean[] = [];
 			var isEmpty : boolean;
 			for (var i = 0; i < 6; i++) {
 				for (var j = 0; j < 6; j++) {
@@ -36,17 +37,53 @@ module Jarl {
 			}
 		}
 		
-		public addTileToGameboard(tile : Tile, row :number, column : number) {
-			// Make sure that the Jarl is the first tile to be added. And it is always black who starts
-			if (tile.tileType == TypeOfTile.Jarl && tile.color == Color.Black) {
-				if ((row == 0 && ( column == 2 || column == 3)) && this.isBoardEmpty()) {
-					this.gameboard[row][column].setBoardSquare(true, tile);
-				} else {
-					throw new NotValidPositionException();
-				}
+		// Check if the tile is added next to a Jarl of same color.
+		private isPositionValid (tile : Tile, row :number, column : number) : boolean {
+			var left : Tile = {color : Color.Undefined, tileType : TypeOfTile.Undefined};
+			var rigth : Tile = {color : Color.Undefined, tileType : TypeOfTile.Undefined};
+			var below : Tile = {color : Color.Undefined, tileType : TypeOfTile.Undefined};
+			var above : Tile = {color : Color.Undefined, tileType : TypeOfTile.Undefined};
+			
+			// To handle that a new tile is added at the border of the board
+			if (row > 0) {
+				var below : Tile = this.gameboard[row - 1][column].getTile();
+			} 
+			if (row < 5) {
+				var above : Tile = this.gameboard[row + 1][column].getTile();	
+			}
+			if (column > 0) {
+				var left : Tile = this.gameboard[row][column - 1].getTile();	
+			}
+			if (column < 5) {
+				var rigth : Tile = this.gameboard[row][column + 1].getTile();
 			}
 			
+			// Check if any of the tiles rigth, left, above or below the tile is a Jarl of the same color.
+			if (((below.color == tile.color) && (below.tileType == TypeOfTile.Jarl)) ||
+				((above.color == tile.color) && (above.tileType == TypeOfTile.Jarl)) ||
+				((left.color == tile.color) && (left.tileType == TypeOfTile.Jarl)) ||
+				((rigth.color == tile.color) && (rigth.tileType == TypeOfTile.Jarl)))			 
+			{
+				return true;
+			} else {
+				return false;
+			}
 		}
+		
+		public addTileToGameboard(tile : Tile, row :number, column : number) {
+			// Make sure that the Jarl is the first tile to be added. And it is always black who starts
+			var validPositionBlackJarl : boolean = (row == 0 && ( column == 2 || column == 3));
+			var validPositionWhiteJarl : boolean = (row == 5 && ( column == 2 || column == 3));
+			if (tile.tileType == TypeOfTile.Jarl && tile.color == Color.Black && validPositionBlackJarl) {
+				this.gameboard[row][column].setBoardSquare(true, tile);
+			} else if (tile.tileType == TypeOfTile.Jarl && tile.color == Color.White && validPositionWhiteJarl) {
+				this.gameboard[row][column].setBoardSquare(true, tile);
+			} else if (tile.tileType != TypeOfTile.Jarl && this.isPositionValid(tile, row, column)) {
+				this.gameboard[row][column].setBoardSquare(true, tile);
+			} else {		
+				throw new NotValidPositionException();
+			};			
+		};
 				
 	};
 	
