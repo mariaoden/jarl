@@ -43,14 +43,15 @@ module Jarl {
 				tile = this.tilesInBag.splice(index, 1); 
 				return tile[0];
 			} else {
+				throw EmptyBagException();
 				return null; // is this needed???
-				throw new EmptyBagException();
 			}						
  
 		};
 	};
 	
-	export function EmptyBagException() {
+	export function EmptyBagException() : string {
 		console.log('The bag is empty no more tiles can be drawn');
+		return ('The bag is empty no more tiles can be drawn');
 	}
 };

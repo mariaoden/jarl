@@ -81,14 +81,15 @@ module Jarl {
 			} else if (tile.tileType != TypeOfTile.Jarl && this.isPositionValid(tile, row, column)) {
 				this.gameboard[row][column].setBoardSquare(true, tile);
 			} else {		
-				throw new NotValidPositionException();
+				throw NotValidPositionException();
 			};			
 		};
 				
 	};
 	
-	export function NotValidPositionException() {
+	export function NotValidPositionException() : string{
 		console.log('Not valid position');
+		return('Not valid position');
 	}
 	
 	export enum Color {White, Black, Undefined};
