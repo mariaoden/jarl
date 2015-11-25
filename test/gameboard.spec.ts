@@ -7,8 +7,8 @@ describe('gameboard', function() {
 	it('should provide a gameboard', function() {
 		for (var i = 0; i < 6; i ++) {
 			for (var j = 0; j < 6; j++) {
-				expect(gameboard[i][j].getTile().color).toEqual(Jarl.Color.Undefined);
-				expect(gameboard[i][j].getTile().tileType).toEqual(Jarl.TypeOfTile.Undefined);
+				expect(gameboard[i][j].getTile().getColor()).toEqual(Jarl.Color.Undefined);
+				expect(gameboard[i][j].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Undefined);
 				expect(gameboard[i][j].isOccupied()).toEqual(false);
 			}
 		}
@@ -18,15 +18,15 @@ describe('gameboard', function() {
 describe('clean gameboard', function() {
 	it('should be possible to remove all tiles on the board', function () {
 		var gameboard = new Jarl.Gameboard();
-		var blackJarlTile : Jarl.Tile = {color : Jarl.Color.Black, tileType : Jarl.TypeOfTile.Jarl};
+		var blackJarlTile : Jarl.TileInterface = new Jarl.JarlTile(Jarl.Color.Black);
 
 		gameboard.addTileToGameboard(blackJarlTile, 0, 2);
 		gameboard.cleanGameboard();
 
 		for (var i = 0; i < 6; i ++) {
 			for (var j = 0; j < 6; j++) {
-				expect(gameboard.getGameboard()[i][j].getTile().color).toEqual(Jarl.Color.Undefined);
-				expect(gameboard.getGameboard()[i][j].getTile().tileType).toEqual(Jarl.TypeOfTile.Undefined);
+				expect(gameboard.getGameboard()[i][j].getTile().getColor()).toEqual(Jarl.Color.Undefined);
+				expect(gameboard.getGameboard()[i][j].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Undefined);
 				expect(gameboard.getGameboard()[i][j].isOccupied()).toEqual(false);
 			}
 		}
@@ -37,8 +37,8 @@ describe('clean gameboard', function() {
 describe('add jarl to board', function() {
 	it('should be possible to add the Jarl as the first tile on the board, and it should be on square [0][2] or [0][3] for black and [5][2] and [5][3] for white.', function () {
 		var gameboard = new Jarl.Gameboard();
-		var blackJarlTile : Jarl.Tile = {color : Jarl.Color.Black, tileType : Jarl.TypeOfTile.Jarl};
-		var whiteJarlTile : Jarl.Tile = {color : Jarl.Color.White, tileType : Jarl.TypeOfTile.Jarl};
+		var blackJarlTile : Jarl.TileInterface = new Jarl.JarlTile(Jarl.Color.Black);
+		var whiteJarlTile : Jarl.TileInterface = new Jarl.JarlTile(Jarl.Color.White);
 		
 		gameboard.addTileToGameboard(blackJarlTile, 0, 2);
 		checkAdditionOfJarlToGameboard(0, 2, gameboard, blackJarlTile);
@@ -56,16 +56,16 @@ describe('add jarl to board', function() {
 		checkAdditionOfJarlToGameboard(5, 3, gameboard, whiteJarlTile);
 		
 		// Check that the tile is placed on suggested square and that all other squares are empty
-		function checkAdditionOfJarlToGameboard(row : number, column : number, gameboard : Jarl.Gameboard, tile : Jarl.Tile) {
+		function checkAdditionOfJarlToGameboard(row : number, column : number, gameboard : Jarl.Gameboard, tile : Jarl.TileInterface) {
 			for (var i = 0; i < 6; i ++) {
 				for (var j = 0; j < 6; j++) {
 					if (i == row && j == column) {
-						expect(gameboard.getGameboard()[i][j].getTile().color).toEqual(tile.color);
-						expect(gameboard.getGameboard()[i][j].getTile().tileType).toEqual(tile.tileType);
+						expect(gameboard.getGameboard()[i][j].getTile().getColor()).toEqual(tile.getColor());
+						expect(gameboard.getGameboard()[i][j].getTile().getTileType()).toEqual(tile.getTileType());
 						expect(gameboard.getGameboard()[i][j].isOccupied()).toEqual(true);
 					} else {
-						expect(gameboard.getGameboard()[i][j].getTile().color).toEqual(Jarl.Color.Undefined);
-						expect(gameboard.getGameboard()[i][j].getTile().tileType).toEqual(Jarl.TypeOfTile.Undefined);
+						expect(gameboard.getGameboard()[i][j].getTile().getColor()).toEqual(Jarl.Color.Undefined);
+						expect(gameboard.getGameboard()[i][j].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Undefined);
 						expect(gameboard.getGameboard()[i][j].isOccupied()).toEqual(false);
 					}
 				}
@@ -75,15 +75,15 @@ describe('add jarl to board', function() {
 	
 	it('should not be possible to add Jarl on wrong square', function() {
 		var gameboard = new Jarl.Gameboard();
-		var blackJarlTile : Jarl.Tile = {color : Jarl.Color.Black, tileType : Jarl.TypeOfTile.Jarl};
-		var whiteJarlTile : Jarl.Tile = {color : Jarl.Color.White, tileType : Jarl.TypeOfTile.Jarl};
+		var blackJarlTile : Jarl.TileInterface = new Jarl.JarlTile(Jarl.Color.Black);
+		var whiteJarlTile : Jarl.TileInterface = new Jarl.JarlTile(Jarl.Color.White);
 
 		gameboard.addTileToGameboard(whiteJarlTile, 5, 0);
 		
 		for (var i = 0; i < 6; i ++) {
 			for (var j = 0; j < 6; j++) {
-				expect(gameboard.getGameboard()[i][j].getTile().color).toEqual(Jarl.Color.Undefined);
-				expect(gameboard.getGameboard()[i][j].getTile().tileType).toEqual(Jarl.TypeOfTile.Undefined);
+				expect(gameboard.getGameboard()[i][j].getTile().getColor()).toEqual(Jarl.Color.Undefined);
+				expect(gameboard.getGameboard()[i][j].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Undefined);
 				expect(gameboard.getGameboard()[i][j].isOccupied()).toEqual(false);
 			}
 		}
@@ -93,15 +93,15 @@ describe('add jarl to board', function() {
 describe('add tile to board', function () {	
 	it('should only be possible to add other tiles next to the Jarl', function () {
 		var gameboard = new Jarl.Gameboard();
-		var freeman : Jarl.Tile = {color : Jarl.Color.Black, tileType : Jarl.TypeOfTile.Freeman};
+		var freeman : Jarl.TileInterface =  new Jarl.FreemanTile(Jarl.Color.White);
 		
 		gameboard.addTileToGameboard(freeman, 1, 3);
 		
 		// Check that no tile is placed on the board and that an exception is thrown
 		for (var i = 0; i < 6; i ++) {
 			for (var j = 0; j < 6; j++) {
-				expect(gameboard.getGameboard()[i][j].getTile().color).toEqual(Jarl.Color.Undefined);
-				expect(gameboard.getGameboard()[i][j].getTile().tileType).toEqual(Jarl.TypeOfTile.Undefined);
+				expect(gameboard.getGameboard()[i][j].getTile().getColor()).toEqual(Jarl.Color.Undefined);
+				expect(gameboard.getGameboard()[i][j].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Undefined);
 				expect(gameboard.getGameboard()[i][j].isOccupied()).toEqual(false);
 			}
 		}
@@ -111,23 +111,23 @@ describe('add tile to board', function () {
 	
 	it('should be possible to add tile next to Jarl', function() {
 		var gameboard = new Jarl.Gameboard();
-		var freeman : Jarl.Tile = {color : Jarl.Color.Black, tileType : Jarl.TypeOfTile.Freeman};
-		var jarlTile : Jarl.Tile = {color : Jarl.Color.Black, tileType : Jarl.TypeOfTile.Jarl};
+		var freeman : Jarl.TileInterface = new Jarl.FreemanTile(Jarl.Color.Black);
+		var jarlTile : Jarl.TileInterface = new Jarl.JarlTile(Jarl.Color.Black);
 
 		gameboard.addTileToGameboard(jarlTile, 0, 2);
 		gameboard.addTileToGameboard(freeman, 0, 3);
 		
-		expect(gameboard.getGameboard()[0][2].getTile().color).toEqual(Jarl.Color.Black);
-		expect(gameboard.getGameboard()[0][2].getTile().tileType).toEqual(Jarl.TypeOfTile.Jarl);
+		expect(gameboard.getGameboard()[0][2].getTile().getColor()).toEqual(Jarl.Color.Black);
+		expect(gameboard.getGameboard()[0][2].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Jarl);
 		expect(gameboard.getGameboard()[0][2].isOccupied()).toEqual(true);
 		
-		expect(gameboard.getGameboard()[0][3].getTile().color).toEqual(Jarl.Color.Black);
-		expect(gameboard.getGameboard()[0][3].getTile().tileType).toEqual(Jarl.TypeOfTile.Freeman);
+		expect(gameboard.getGameboard()[0][3].getTile().getColor()).toEqual(Jarl.Color.Black);
+		expect(gameboard.getGameboard()[0][3].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Freeman);
 		expect(gameboard.getGameboard()[0][3].isOccupied()).toEqual(true);
 		
 		gameboard.addTileToGameboard(freeman, 1, 2);
-		expect(gameboard.getGameboard()[1][2].getTile().color).toEqual(Jarl.Color.Black);
-		expect(gameboard.getGameboard()[1][2].getTile().tileType).toEqual(Jarl.TypeOfTile.Freeman);
+		expect(gameboard.getGameboard()[1][2].getTile().getColor()).toEqual(Jarl.Color.Black);
+		expect(gameboard.getGameboard()[1][2].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Freeman);
 		expect(gameboard.getGameboard()[1][2].isOccupied()).toEqual(true);
 	});
 });

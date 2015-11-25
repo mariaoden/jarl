@@ -1,43 +1,53 @@
 module Jarl {
 	export interface PlayerInterface {
-		getStartupTiles() : Array<Tile>;
-		addLostTile(lostTile : Tile) : Number;
-		getLostTiles() : Array<Tile>;
-		drawTileFromBag() : Tile; //Draws a random Tile from the bag and adds it to startupTiles and returns startupTiles
+		getStartupTiles() : Array<TileInterface>;
+		addLostTile(lostTile : TileInterface) : Number;
+		getLostTiles() : Array<TileInterface>;
+		drawTileFromBag() : TileInterface; //Draws a random Tile from the bag and adds it to startupTiles and returns startupTiles
 	}
 	
 	export class Player implements PlayerInterface{
-		private lostTiles : Array<Tile>;
-		private startupTiles : Array<Tile>;
-		private tilesInBag : Array<Tile>;
+		private lostTiles : Array<TileInterface>;
+		private startupTiles : Array<TileInterface>;
+		private tilesInBag : Array<TileInterface>;
 		
-		private jarlTile : Tile;
-		private freeman : Tile;
+		private jarlTile : TileInterface;
+		private freeman1 : TileInterface;
+		private freeman2 : TileInterface;
+		private freeman3 : TileInterface;		
+		private freeman4 : TileInterface;
+		private freeman5 : TileInterface;
+		private freeman6 : TileInterface;
 		
 		constructor(color_ : Color) {
-			this.jarlTile = {color : color_, tileType : TypeOfTile.Jarl};
-			this.freeman =  {color : color_, tileType : TypeOfTile.Freeman};
-			// All tiles must be unique, will not work in the future
-			this.tilesInBag = [this.freeman, this.freeman, this.freeman, this.freeman];
-			this.startupTiles = [this.jarlTile, this.freeman, this.freeman];
+			this.jarlTile = new JarlTile(color_);
+			this.freeman1 =  new FreemanTile(color_);
+			this.freeman2 =  new FreemanTile(color_);			
+			this.freeman3 =  new FreemanTile(color_);
+			this.freeman4 =  new FreemanTile(color_);
+			this.freeman5 =  new FreemanTile(color_);
+			this.freeman6 =  new FreemanTile(color_);
+			
+			this.tilesInBag = [this.freeman3, this.freeman4, this.freeman5, this.freeman6];
+			this.startupTiles = [this.jarlTile, this.freeman1, this.freeman2];
 			this.lostTiles = [];
 		};
 		
-		public getStartupTiles() : Array<Tile> {
+		public getStartupTiles() : Array<TileInterface> {
 			return this.startupTiles;
 		};
 		
-		public addLostTile(lostTile : Tile) : Number {
+		public addLostTile(lostTile : TileInterface) : Number {
 			var nbrOfLostTiles : Number = this.lostTiles.push(lostTile);
 			return nbrOfLostTiles;
 		};
 		
-		public getLostTiles() : Array<Tile> {
+		public getLostTiles() : Array<TileInterface> {
 			return this.lostTiles;
 		}
 		
-		public drawTileFromBag() : Tile {
-			var tile : Tile[];
+		public drawTileFromBag() : TileInterface {
+			var tile : TileInterface[];
 			var index = Math.floor(Math.random() * this.tilesInBag.length);
 			if (this.tilesInBag.length > 0) {
 				tile = this.tilesInBag.splice(index, 1); 

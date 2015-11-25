@@ -3,7 +3,7 @@ module Jarl {
 		private gameboard : Array<Array<BoardSquareInterface>> = [];
 		
 		constructor() {
-			var defaultTile : Tile = {color : Color.Undefined, tileType : TypeOfTile.Undefined};
+			var defaultTile : TileInterface = new UndefinedTile;
 			for (var i = 0; i < 6; i++) {
 				this.gameboard[i] = new Array<BoardSquareInterface>();
 				for (var j = 0; j < 6; j++) {
@@ -38,31 +38,31 @@ module Jarl {
 		}
 		
 		// Check if the tile is added next to a Jarl of same color.
-		private isPositionValid (tile : Tile, row :number, column : number) : boolean {
-			var left : Tile = {color : Color.Undefined, tileType : TypeOfTile.Undefined};
-			var rigth : Tile = {color : Color.Undefined, tileType : TypeOfTile.Undefined};
-			var below : Tile = {color : Color.Undefined, tileType : TypeOfTile.Undefined};
-			var above : Tile = {color : Color.Undefined, tileType : TypeOfTile.Undefined};
+		private isPositionValid (tile : TileInterface, row :number, column : number) : boolean {
+			var left : TileInterface = new UndefinedTile;
+			var rigth : TileInterface = new UndefinedTile;
+			var below : TileInterface = new UndefinedTile;
+			var above : TileInterface = new UndefinedTile;
 			
 			// To handle that a new tile is added at the border of the board
 			if (row > 0) {
-				var below : Tile = this.gameboard[row - 1][column].getTile();
+				below = this.gameboard[row - 1][column].getTile();
 			} 
 			if (row < 5) {
-				var above : Tile = this.gameboard[row + 1][column].getTile();	
+				above = this.gameboard[row + 1][column].getTile();	
 			}
 			if (column > 0) {
-				var left : Tile = this.gameboard[row][column - 1].getTile();	
+				left = this.gameboard[row][column - 1].getTile();	
 			}
 			if (column < 5) {
-				var rigth : Tile = this.gameboard[row][column + 1].getTile();
+				rigth = this.gameboard[row][column + 1].getTile();
 			}
 			
 			// Check if any of the tiles rigth, left, above or below the tile is a Jarl of the same color.
-			if (((below.color == tile.color) && (below.tileType == TypeOfTile.Jarl)) ||
-				((above.color == tile.color) && (above.tileType == TypeOfTile.Jarl)) ||
-				((left.color == tile.color) && (left.tileType == TypeOfTile.Jarl)) ||
-				((rigth.color == tile.color) && (rigth.tileType == TypeOfTile.Jarl)))			 
+			if (((below.getColor() == tile.getColor()) && (below.getTileType() == TypeOfTile.Jarl)) ||
+				((above.getColor() == tile.getColor()) && (above.getTileType() == TypeOfTile.Jarl)) ||
+				((left.getColor() == tile.getColor()) && (left.getTileType() == TypeOfTile.Jarl)) ||
+				((rigth.getColor() == tile.getColor()) && (rigth.getTileType() == TypeOfTile.Jarl)))			 
 			{
 				return true;
 			} else {
@@ -70,7 +70,7 @@ module Jarl {
 			}
 		}
 		
-		public addTileToGameboard(tile : Tile, row :number, column : number) {
+		public addTileToGameboard(tile : TileInterface, row :number, column : number) {
 			// Make sure that the Jarl is the first tile to be added. And it is always black who starts
 			var validPositionBlackJarl : boolean = (row == 0 && ( column == 2 || column == 3));
 			var validPositionWhiteJarl : boolean = (row == 5 && ( column == 2 || column == 3));
@@ -78,11 +78,11 @@ module Jarl {
 			
 			// Behöver jag ta hänsyn till sånt som inte ska kunna hända. Som att man försöker lägga ut två stycken jarl av samma färg. Kanske kan lägga in funkiton i Jarl brickan att constructorn bara får anropas en gång eller nått....
 			if (isNotOccupied) {
-				if (tile.tileType == TypeOfTile.Jarl && tile.color == Color.Black && validPositionBlackJarl) {
+				if (tile.getTileType() == TypeOfTile.Jarl && tile.getColor() == Color.Black && validPositionBlackJarl) {
 					this.gameboard[row][column].setBoardSquare(true, tile);
-				} else if (tile.tileType == TypeOfTile.Jarl && tile.color == Color.White && validPositionWhiteJarl) {
+				} else if (tile.getTileType() == TypeOfTile.Jarl && tile.getColor() == Color.White && validPositionWhiteJarl) {
 					this.gameboard[row][column].setBoardSquare(true, tile);
-				} else if (tile.tileType != TypeOfTile.Jarl && this.isPositionValid(tile, row, column)) {
+				} else if (tile.getTileType() != TypeOfTile.Jarl && this.isPositionValid(tile, row, column)) {
 					this.gameboard[row][column].setBoardSquare(true, tile);
 				} else {		
 					throw NotValidPositionException(0);
@@ -109,19 +109,19 @@ module Jarl {
 
 	export interface BoardSquareInterface {
 		isOccupied() : boolean;
-		getTile() : Tile;
-		setBoardSquare(occupied_ : boolean, tile_ : Tile);
+		getTile() : TileInterface;
+		setBoardSquare(occupied_ : boolean, tile_ : TileInterface);
 		resetBoardSquare();
 	}
 	
 	export class BoardSquare implements BoardSquareInterface {
 		private occupied : boolean;
-		private tile : Tile;
+		private tile : TileInterface;
 		constructor() {
 			this.occupied = false;
-			this.tile = {color : Color.Undefined, tileType : TypeOfTile.Undefined};
+			this.tile = new UndefinedTile;
 		}
-		setBoardSquare(occupied_ : boolean, tile_ : Tile) {
+		setBoardSquare(occupied_ : boolean, tile_ : TileInterface) {
 			this.occupied = occupied_;
 			this.tile = tile_;
 			// Add Error message if occupied is true and tile is not undefined, or overwrite incomming tile
@@ -129,13 +129,13 @@ module Jarl {
 		
 		resetBoardSquare() {
 			this.occupied = false;
-			this.tile = {color : Color.Undefined, tileType : TypeOfTile.Undefined};
+			this.tile = new UndefinedTile;
 		}
 		
 		isOccupied() : boolean {
 			return this.occupied;
 		}	
-		getTile() : Tile {
+		getTile() : TileInterface {
 			return this.tile;
 		}
 	};
