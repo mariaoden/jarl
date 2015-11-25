@@ -106,16 +106,11 @@ module Jarl {
 	}
 	
 	export enum Color {White, Black, Undefined};
-	export enum TypeOfTile {Jarl, Freeman, Undefined};
-	
-	export interface Tile {
-		color : Color;
-		tileType : TypeOfTile; 
-	}
+
 	export interface BoardSquareInterface {
 		isOccupied() : boolean;
 		getTile() : Tile;
-		setBoardSquare(occupied_ : boolean, tile_ : Tile);	
+		setBoardSquare(occupied_ : boolean, tile_ : Tile);
 		resetBoardSquare();
 	}
 	
