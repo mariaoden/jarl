@@ -74,22 +74,34 @@ module Jarl {
 			// Make sure that the Jarl is the first tile to be added. And it is always black who starts
 			var validPositionBlackJarl : boolean = (row == 0 && ( column == 2 || column == 3));
 			var validPositionWhiteJarl : boolean = (row == 5 && ( column == 2 || column == 3));
-			if (tile.tileType == TypeOfTile.Jarl && tile.color == Color.Black && validPositionBlackJarl) {
-				this.gameboard[row][column].setBoardSquare(true, tile);
-			} else if (tile.tileType == TypeOfTile.Jarl && tile.color == Color.White && validPositionWhiteJarl) {
-				this.gameboard[row][column].setBoardSquare(true, tile);
-			} else if (tile.tileType != TypeOfTile.Jarl && this.isPositionValid(tile, row, column)) {
-				this.gameboard[row][column].setBoardSquare(true, tile);
-			} else {		
-				throw NotValidPositionException();
-			};			
+			var isNotOccupied : boolean = !this.gameboard[row][column].getOccupied();
+			
+			if (isNotOccupied) {
+				if (tile.tileType == TypeOfTile.Jarl && tile.color == Color.Black && validPositionBlackJarl) {
+					this.gameboard[row][column].setBoardSquare(true, tile);
+				} else if (tile.tileType == TypeOfTile.Jarl && tile.color == Color.White && validPositionWhiteJarl) {
+					this.gameboard[row][column].setBoardSquare(true, tile);
+				} else if (tile.tileType != TypeOfTile.Jarl && this.isPositionValid(tile, row, column)) {
+					this.gameboard[row][column].setBoardSquare(true, tile);
+				} else {		
+					throw NotValidPositionException(0);
+				};	
+			} else {
+				throw NotValidPositionException(1);
+			}		
 		};
 				
 	};
 	
-	export function NotValidPositionException() : string{
-		console.log('Not valid position');
-		return('Not valid position');
+	export function NotValidPositionException(n : number) : string{
+		var msg : string;
+		if (n == 0) {
+			msg = "Not valid position";
+		} else if (n == 1) {
+			msg = "square is already occupied"
+		}
+		console.log(msg);
+		return(msg);
 	}
 	
 	export enum Color {White, Black, Undefined};
@@ -116,7 +128,7 @@ module Jarl {
 		setBoardSquare(occupied_ : boolean, tile_ : Tile) {
 			this.occupied = occupied_;
 			this.tile = tile_;
-			// Add Error message if occupied is false and tile is not undefined, or overwrite incomming tile
+			// Add Error message if occupied is true and tile is not undefined, or overwrite incomming tile
 		}	
 		
 		resetBoardSquare() {
