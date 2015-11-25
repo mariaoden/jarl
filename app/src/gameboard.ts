@@ -12,13 +12,13 @@ module Jarl {
 			} 
 		}
 		
-		// NOt used right now
+		// Not used right now
 		private isBoardEmpty() : boolean {
 			var occupied : boolean[] = [];
 			var isEmpty : boolean;
 			for (var i = 0; i < 6; i++) {
 				for (var j = 0; j < 6; j++) {
-					occupied.push(this.gameboard[i][j].getOccupied());
+					occupied.push(this.gameboard[i][j].isOccupied());
 				}
 			}
 			isEmpty = (_.findWhere(occupied, true) == undefined);
@@ -74,8 +74,9 @@ module Jarl {
 			// Make sure that the Jarl is the first tile to be added. And it is always black who starts
 			var validPositionBlackJarl : boolean = (row == 0 && ( column == 2 || column == 3));
 			var validPositionWhiteJarl : boolean = (row == 5 && ( column == 2 || column == 3));
-			var isNotOccupied : boolean = !this.gameboard[row][column].getOccupied();
+			var isNotOccupied : boolean = !this.gameboard[row][column].isOccupied();
 			
+			// Behöver jag ta hänsyn till sånt som inte ska kunna hända. Som att man försöker lägga ut två stycken jarl av samma färg. Kanske kan lägga in funkiton i Jarl brickan att constructorn bara får anropas en gång eller nått....
 			if (isNotOccupied) {
 				if (tile.tileType == TypeOfTile.Jarl && tile.color == Color.Black && validPositionBlackJarl) {
 					this.gameboard[row][column].setBoardSquare(true, tile);
@@ -98,7 +99,7 @@ module Jarl {
 		if (n == 0) {
 			msg = "Not valid position";
 		} else if (n == 1) {
-			msg = "square is already occupied"
+			msg = "Square is already occupied"
 		}
 		console.log(msg);
 		return(msg);
@@ -112,7 +113,7 @@ module Jarl {
 		tileType : TypeOfTile; 
 	}
 	export interface BoardSquareInterface {
-		getOccupied() : boolean;
+		isOccupied() : boolean;
 		getTile() : Tile;
 		setBoardSquare(occupied_ : boolean, tile_ : Tile);	
 		resetBoardSquare();
@@ -136,7 +137,7 @@ module Jarl {
 			this.tile = {color : Color.Undefined, tileType : TypeOfTile.Undefined};
 		}
 		
-		getOccupied() : boolean {
+		isOccupied() : boolean {
 			return this.occupied;
 		}	
 		getTile() : Tile {

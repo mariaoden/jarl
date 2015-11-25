@@ -9,7 +9,7 @@ describe('gameboard', function() {
 			for (var j = 0; j < 6; j++) {
 				expect(gameboard[i][j].getTile().color).toEqual(Jarl.Color.Undefined);
 				expect(gameboard[i][j].getTile().tileType).toEqual(Jarl.TypeOfTile.Undefined);
-				expect(gameboard[i][j].getOccupied()).toEqual(false);
+				expect(gameboard[i][j].isOccupied()).toEqual(false);
 			}
 		}
 	});	
@@ -27,7 +27,7 @@ describe('clean gameboard', function() {
 			for (var j = 0; j < 6; j++) {
 				expect(gameboard.getGameboard()[i][j].getTile().color).toEqual(Jarl.Color.Undefined);
 				expect(gameboard.getGameboard()[i][j].getTile().tileType).toEqual(Jarl.TypeOfTile.Undefined);
-				expect(gameboard.getGameboard()[i][j].getOccupied()).toEqual(false);
+				expect(gameboard.getGameboard()[i][j].isOccupied()).toEqual(false);
 			}
 		}
 		
@@ -62,11 +62,11 @@ describe('add jarl to board', function() {
 					if (i == row && j == column) {
 						expect(gameboard.getGameboard()[i][j].getTile().color).toEqual(tile.color);
 						expect(gameboard.getGameboard()[i][j].getTile().tileType).toEqual(tile.tileType);
-						expect(gameboard.getGameboard()[i][j].getOccupied()).toEqual(true);
+						expect(gameboard.getGameboard()[i][j].isOccupied()).toEqual(true);
 					} else {
 						expect(gameboard.getGameboard()[i][j].getTile().color).toEqual(Jarl.Color.Undefined);
 						expect(gameboard.getGameboard()[i][j].getTile().tileType).toEqual(Jarl.TypeOfTile.Undefined);
-						expect(gameboard.getGameboard()[i][j].getOccupied()).toEqual(false);
+						expect(gameboard.getGameboard()[i][j].isOccupied()).toEqual(false);
 					}
 				}
 			}
@@ -84,7 +84,7 @@ describe('add jarl to board', function() {
 			for (var j = 0; j < 6; j++) {
 				expect(gameboard.getGameboard()[i][j].getTile().color).toEqual(Jarl.Color.Undefined);
 				expect(gameboard.getGameboard()[i][j].getTile().tileType).toEqual(Jarl.TypeOfTile.Undefined);
-				expect(gameboard.getGameboard()[i][j].getOccupied()).toEqual(false);
+				expect(gameboard.getGameboard()[i][j].isOccupied()).toEqual(false);
 			}
 		}
 	});
@@ -102,7 +102,7 @@ describe('add tile to board', function () {
 			for (var j = 0; j < 6; j++) {
 				expect(gameboard.getGameboard()[i][j].getTile().color).toEqual(Jarl.Color.Undefined);
 				expect(gameboard.getGameboard()[i][j].getTile().tileType).toEqual(Jarl.TypeOfTile.Undefined);
-				expect(gameboard.getGameboard()[i][j].getOccupied()).toEqual(false);
+				expect(gameboard.getGameboard()[i][j].isOccupied()).toEqual(false);
 			}
 		}
 		
@@ -119,16 +119,16 @@ describe('add tile to board', function () {
 		
 		expect(gameboard.getGameboard()[0][2].getTile().color).toEqual(Jarl.Color.Black);
 		expect(gameboard.getGameboard()[0][2].getTile().tileType).toEqual(Jarl.TypeOfTile.Jarl);
-		expect(gameboard.getGameboard()[0][2].getOccupied()).toEqual(true);
+		expect(gameboard.getGameboard()[0][2].isOccupied()).toEqual(true);
 		
 		expect(gameboard.getGameboard()[0][3].getTile().color).toEqual(Jarl.Color.Black);
 		expect(gameboard.getGameboard()[0][3].getTile().tileType).toEqual(Jarl.TypeOfTile.Freeman);
-		expect(gameboard.getGameboard()[0][3].getOccupied()).toEqual(true);
+		expect(gameboard.getGameboard()[0][3].isOccupied()).toEqual(true);
 		
 		gameboard.addTileToGameboard(freeman, 1, 2);
 		expect(gameboard.getGameboard()[1][2].getTile().color).toEqual(Jarl.Color.Black);
 		expect(gameboard.getGameboard()[1][2].getTile().tileType).toEqual(Jarl.TypeOfTile.Freeman);
-		expect(gameboard.getGameboard()[1][2].getOccupied()).toEqual(true);
+		expect(gameboard.getGameboard()[1][2].isOccupied()).toEqual(true);
 	});
 });
 
