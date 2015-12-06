@@ -1,8 +1,7 @@
 /// <reference path="../typings/jasmine/jasmine.d.ts" />
 /// <reference path="../app/src/gameboard.ts" />
 describe('gameboard', function() {
-	
-	var gameboard = new Jarl.Gameboard().getGameboard(); 
+	var gameboard = new Jarl.Gameboard().getBoard(); 
 	
 	it('should provide a gameboard', function() {
 		for (var i = 0; i < 6; i ++) {
@@ -12,7 +11,8 @@ describe('gameboard', function() {
 				expect(gameboard[i][j].isOccupied()).toEqual(false);
 			}
 		}
-	});	
+	});
+	
 });
 
 describe('clean gameboard', function() {
@@ -25,9 +25,9 @@ describe('clean gameboard', function() {
 
 		for (var i = 0; i < 6; i ++) {
 			for (var j = 0; j < 6; j++) {
-				expect(gameboard.getGameboard()[i][j].getTile().getColor()).toEqual(Jarl.Color.Undefined);
-				expect(gameboard.getGameboard()[i][j].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Undefined);
-				expect(gameboard.getGameboard()[i][j].isOccupied()).toEqual(false);
+				expect(gameboard.getBoard()[i][j].getTile().getColor()).toEqual(Jarl.Color.Undefined);
+				expect(gameboard.getBoard()[i][j].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Undefined);
+				expect(gameboard.getBoard()[i][j].isOccupied()).toEqual(false);
 			}
 		}
 		
@@ -60,13 +60,13 @@ describe('add jarl to board', function() {
 			for (var i = 0; i < 6; i ++) {
 				for (var j = 0; j < 6; j++) {
 					if (i == row && j == column) {
-						expect(gameboard.getGameboard()[i][j].getTile().getColor()).toEqual(tile.getColor());
-						expect(gameboard.getGameboard()[i][j].getTile().getTileType()).toEqual(tile.getTileType());
-						expect(gameboard.getGameboard()[i][j].isOccupied()).toEqual(true);
+						expect(gameboard.getBoard()[i][j].getTile().getColor()).toEqual(tile.getColor());
+						expect(gameboard.getBoard()[i][j].getTile().getTileType()).toEqual(tile.getTileType());
+						expect(gameboard.getBoard()[i][j].isOccupied()).toEqual(true);
 					} else {
-						expect(gameboard.getGameboard()[i][j].getTile().getColor()).toEqual(Jarl.Color.Undefined);
-						expect(gameboard.getGameboard()[i][j].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Undefined);
-						expect(gameboard.getGameboard()[i][j].isOccupied()).toEqual(false);
+						expect(gameboard.getBoard()[i][j].getTile().getColor()).toEqual(Jarl.Color.Undefined);
+						expect(gameboard.getBoard()[i][j].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Undefined);
+						expect(gameboard.getBoard()[i][j].isOccupied()).toEqual(false);
 					}
 				}
 			}
@@ -82,9 +82,9 @@ describe('add jarl to board', function() {
 		
 		for (var i = 0; i < 6; i ++) {
 			for (var j = 0; j < 6; j++) {
-				expect(gameboard.getGameboard()[i][j].getTile().getColor()).toEqual(Jarl.Color.Undefined);
-				expect(gameboard.getGameboard()[i][j].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Undefined);
-				expect(gameboard.getGameboard()[i][j].isOccupied()).toEqual(false);
+				expect(gameboard.getBoard()[i][j].getTile().getColor()).toEqual(Jarl.Color.Undefined);
+				expect(gameboard.getBoard()[i][j].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Undefined);
+				expect(gameboard.getBoard()[i][j].isOccupied()).toEqual(false);
 			}
 		}
 	});
@@ -100,9 +100,9 @@ describe('add tile to board', function () {
 		// Check that no tile is placed on the board and that an exception is thrown
 		for (var i = 0; i < 6; i ++) {
 			for (var j = 0; j < 6; j++) {
-				expect(gameboard.getGameboard()[i][j].getTile().getColor()).toEqual(Jarl.Color.Undefined);
-				expect(gameboard.getGameboard()[i][j].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Undefined);
-				expect(gameboard.getGameboard()[i][j].isOccupied()).toEqual(false);
+				expect(gameboard.getBoard()[i][j].getTile().getColor()).toEqual(Jarl.Color.Undefined);
+				expect(gameboard.getBoard()[i][j].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Undefined);
+				expect(gameboard.getBoard()[i][j].isOccupied()).toEqual(false);
 			}
 		}
 		
@@ -117,21 +117,36 @@ describe('add tile to board', function () {
 		gameboard.addTileToGameboard(jarlTile, 0, 2);
 		gameboard.addTileToGameboard(freeman, 0, 3);
 		
-		expect(gameboard.getGameboard()[0][2].getTile().getColor()).toEqual(Jarl.Color.Black);
-		expect(gameboard.getGameboard()[0][2].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Jarl);
-		expect(gameboard.getGameboard()[0][2].isOccupied()).toEqual(true);
+		expect(gameboard.getBoard()[0][2].getTile().getColor()).toEqual(Jarl.Color.Black);
+		expect(gameboard.getBoard()[0][2].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Jarl);
+		expect(gameboard.getBoard()[0][2].isOccupied()).toEqual(true);
 		
-		expect(gameboard.getGameboard()[0][3].getTile().getColor()).toEqual(Jarl.Color.Black);
-		expect(gameboard.getGameboard()[0][3].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Freeman);
-		expect(gameboard.getGameboard()[0][3].isOccupied()).toEqual(true);
+		expect(gameboard.getBoard()[0][3].getTile().getColor()).toEqual(Jarl.Color.Black);
+		expect(gameboard.getBoard()[0][3].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Freeman);
+		expect(gameboard.getBoard()[0][3].isOccupied()).toEqual(true);
 		
 		gameboard.addTileToGameboard(freeman, 1, 2);
-		expect(gameboard.getGameboard()[1][2].getTile().getColor()).toEqual(Jarl.Color.Black);
-		expect(gameboard.getGameboard()[1][2].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Freeman);
-		expect(gameboard.getGameboard()[1][2].isOccupied()).toEqual(true);
+		expect(gameboard.getBoard()[1][2].getTile().getColor()).toEqual(Jarl.Color.Black);
+		expect(gameboard.getBoard()[1][2].getTile().getTileType()).toEqual(Jarl.TypeOfTile.Freeman);
+		expect(gameboard.getBoard()[1][2].isOccupied()).toEqual(true);
 	});
 });
 
+describe('move tile', function() {
+	it('should determine if a move is possible and act upon the tiles on the board', function() {
+		var gameboard : Jarl.Gameboard = new Jarl.Gameboard();
+		var blackJarlTile : Jarl.TileInterface = new Jarl.JarlTile(Jarl.Color.Black);
+		var whiteJarlTile : Jarl.TileInterface = new Jarl.JarlTile(Jarl.Color.White);
+		var blackFreeman1 : Jarl.TileInterface = new Jarl.FreemanTile(Jarl.Color.Black);
+		var blackFreeman2 : Jarl.TileInterface = new Jarl.FreemanTile(Jarl.Color.Black);
+		var blackFreeman3 : Jarl.TileInterface = new Jarl.FreemanTile(Jarl.Color.Black);
+		var blackFreeman4 : Jarl.TileInterface = new Jarl.FreemanTile(Jarl.Color.Black);
+		var whiteFreeman1 : Jarl.TileInterface = new Jarl.FreemanTile(Jarl.Color.White);
+		var whiteFreeman2 : Jarl.TileInterface = new Jarl.FreemanTile(Jarl.Color.White);
+		var whiteFreeman3 : Jarl.TileInterface = new Jarl.FreemanTile(Jarl.Color.White);
+		var whiteFreeman4 : Jarl.TileInterface = new Jarl.FreemanTile(Jarl.Color.White);
+	});
+});
 describe('keep track of tiles', function() {
 	it('should keep track of tiles placed on the board', function() {
 		

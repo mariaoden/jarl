@@ -1,15 +1,18 @@
 module Jarl {
 	export interface PlayerInterface {
+		getAvailableTiles() : Array<TileInterface>; 
 		getStartupTiles() : Array<TileInterface>;
 		addLostTile(lostTile : TileInterface) : Number;
 		getLostTiles() : Array<TileInterface>;
-		drawTileFromBag() : TileInterface; //Draws a random Tile from the bag and adds it to startupTiles and returns startupTiles
+		drawTileFromBag() : TileInterface; //Draws a random Tile from the bag and adds it to availableTiles and returns the drawn tile
+		useTile(tile : TileInterface);
 	}
 	
 	export class Player implements PlayerInterface{
 		private lostTiles : Array<TileInterface>;
 		private startupTiles : Array<TileInterface>;
 		private tilesInBag : Array<TileInterface>;
+		private availableTiles : Array<TileInterface>;
 		
 		private jarlTile : TileInterface;
 		private freeman1 : TileInterface;
@@ -30,7 +33,9 @@ module Jarl {
 			
 			this.tilesInBag = [this.freeman3, this.freeman4, this.freeman5, this.freeman6];
 			this.startupTiles = [this.jarlTile, this.freeman1, this.freeman2];
+			this.availableTiles = this.startupTiles;
 			this.lostTiles = [];
+			
 		};
 		
 		public getStartupTiles() : Array<TileInterface> {
@@ -51,6 +56,7 @@ module Jarl {
 			var index = Math.floor(Math.random() * this.tilesInBag.length);
 			if (this.tilesInBag.length > 0) {
 				tile = this.tilesInBag.splice(index, 1); 
+				this.availableTiles.push(tile[0]);
 				return tile[0];
 			} else {
 				throw EmptyBagException();
@@ -58,10 +64,29 @@ module Jarl {
 			}						
  
 		};
+		
+		public getAvailableTiles() : Array<TileInterface> {
+			return this.availableTiles;
+		}
+		
+		public useTile(tile : TileInterface) {
+			var index : number;
+			index = _.findWhere(this.availableTiles, tile);
+			if (index != undefined) {
+				this.availableTiles.splice(index, 1);
+			} else {
+				throw TileNotAvailableException();
+			}
+		}
 	};
 	
 	export function EmptyBagException() : string {
 		console.log('The bag is empty no more tiles can be drawn');
 		return ('The bag is empty no more tiles can be drawn');
+	}
+	
+	export function TileNotAvailableException() : string {
+		console.log('The searched tile is not available, either choose another tile or draw a new tile from bag');
+		return ('The searched tile is not available, either choose another tile or draw a new tile from bag');
 	}
 };

@@ -1,10 +1,13 @@
+
+
 module Jarl {
 	export enum TypeOfTile {Jarl, Freeman, Undefined};
 	
 	export interface TileInterface {
 		getColor() : Color;
 		getTileType() : TypeOfTile;
-		move(row : number, column : number) : boolean; //reutrns true if current move is possible
+		getAct(currentSquare : squareInterface, actingSquare : squareInterface) : string; //reutrns the type of move that is possible, if no move is valid null is returned
+		getShield(currentSquare : squareInterface) : squareInterface ; //returns the squares which its shield is acting on
 		flip() : number; //returns the side of the tile which is facing upp
 	};
 	
@@ -20,8 +23,12 @@ module Jarl {
 			return this.tileType;
 		}
 		
-		public move(row : number, column : number) : boolean {
-			return false;
+		public getAct(currentSquare : squareInterface, actingSquare : squareInterface) : string {
+			return null;
+		}
+		
+		public getShield(currentSquare : squareInterface) : squareInterface {
+			return null;
 		}
 		
 		public flip() : number {
@@ -44,8 +51,12 @@ module Jarl {
 			return this.tileType;
 		}
 		
-		public move(row : number, column : number) : boolean {
-			return true;
+		public getAct(currentSquare : squareInterface, actingSquare : squareInterface) : string {
+			return null;
+		}
+		
+		public getShield(currentSquare : squareInterface) : squareInterface {
+			return null;
 		}
 		
 		public flip() : number {
@@ -68,8 +79,26 @@ module Jarl {
 			return this.tileType;
 		}
 		
-		public move(row : number, column : number) : boolean {
-			return true;
+		public getAct(currentSquare : squareInterface, actingSquare : squareInterface) : string {
+					   
+			var act : string;
+			
+			if (((currentSquare.row + 1 == actingSquare.row) && ((currentSquare.column - 1 == actingSquare.column) || (currentSquare.column + 1 == actingSquare.column))) ||
+				((currentSquare.row - 1 == actingSquare.row) && (currentSquare.column == actingSquare.column))) {
+			
+				act = "killMove";
+			
+			} else if ((currentSquare.row + 2 == actingSquare.row) && (currentSquare.column == actingSquare.column)) {
+				act = "move";
+			} else {
+				act = null;
+			}				
+			return act;
+		}
+		
+		public getShield(currentSquare : squareInterface) : squareInterface {
+			var shield : squareInterface = {row : currentSquare.row + 1, column : currentSquare.column};
+			return shield;
 		}
 		
 		public flip() : number {
