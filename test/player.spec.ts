@@ -5,7 +5,7 @@
 describe('create new Player', function() {
 	it('should create a new white player, with three available tiles one Jarl and two Freeman', function() {
 		var player  = new Jarl.Player(Jarl.Color.White);
-		var startupTiles : Array<Jarl.TileInterface> = player.getStartupTiles();
+		var startupTiles : Array<Jarl.TileInterface> = player.getAvailableTiles();
 		var jarlTile : Jarl.TileInterface = new Jarl.JarlTile(Jarl.Color.White);
 		var freeman : Jarl.TileInterface = new Jarl.FreemanTile(Jarl.Color.White);
 				
@@ -24,7 +24,7 @@ describe('create new Player', function() {
 	
 	it('should create a new Black player, with three available tiles one Jarl and two Freeman', function() {
 		var player  = new Jarl.Player(Jarl.Color.Black);
-		var startupTiles : Array<Jarl.TileInterface> = player.getStartupTiles();
+		var startupTiles : Array<Jarl.TileInterface> = player.getAvailableTiles();
 		var jarlTile : Jarl.TileInterface = new Jarl.JarlTile(Jarl.Color.Black);
 		var freeman : Jarl.TileInterface = new Jarl.FreemanTile(Jarl.Color.Black);
 				
@@ -51,6 +51,28 @@ describe('create new Player', function() {
 	
 });
 
+describe('start up tiles must be used before a new tile can be drawn', function() {
+	var player = new Jarl.Player(Jarl.Color.White);
+	
+	
+	it('no used tile', function () {
+		expect(player.drawTileFromBag()).toEqual(null);
+	});
+	player.useTile(Jarl.JarlTile);
+	it('first tile', function() {
+		expect(player.drawTileFromBag()).toEqual(null);
+	})
+	player.useTile(Jarl.FreemanTile);
+	it('second tile', function() {
+		expect(player.drawTileFromBag()).toEqual(null);
+	})
+	player.useTile(Jarl.FreemanTile);
+	it('third tile', function() {
+		expect(player.drawTileFromBag()).toEqual(!null);
+	})
+	
+});
+
 describe ('draw tiles from bag', function () {
 	it(' should be able to draw tiles from the bag in random order untill the bag is empty', function() {
 		var player  = new Jarl.Player(Jarl.Color.Black);
@@ -64,7 +86,7 @@ describe ('draw tiles from bag', function () {
 			expect(drawnTiles[i]).not.toEqual(null); 
 		}	
 		
-		// Check that there are 4 Freemans has been drawn		
+		// Check that 4 Freemans has been drawn		
 		for (var i = 0; i < 4; i++) {
 			expect(_.findWhere(drawnTiles, freeman)).not.toBeUndefined();
 			drawnTiles.splice(_.findIndex(drawnTiles, function(item) {return item.getColor() == freeman.getColor() && item.getTileType() == freeman.getTileType(); }),1);

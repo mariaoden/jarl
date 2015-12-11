@@ -20,12 +20,12 @@ describe('starting a new game', function() {
 
 describe('startup phase', function() {
 	var jarl : Jarl.Model = new Jarl.Model();
-	var player1 : Jarl.PlayerInterface = jarl.getPlayer1();
-	var player2 : Jarl.PlayerInterface = jarl.getPlayer2();
+	var player1 : Jarl.Player = jarl.getPlayer1();
+	var player2 : Jarl.Player = jarl.getPlayer2();
 	var gameboard : Jarl.Gameboard = jarl.getGameboard();
 	
 	it('should be possible to add tiles to board one player at a time', function () {
-		jarl.getPlayer1().getStartupTiles
+		// jarl.getPlayer1().getAvailableTiles();
 	});
 });
 	

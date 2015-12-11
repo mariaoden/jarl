@@ -1,7 +1,7 @@
 module Jarl {
 	export class Model {
-		private player1 : PlayerInterface;
-		private player2 : PlayerInterface;
+		private player1 : Player;
+		private player2 : Player;
 		private gameboard : Gameboard;
 		
 		constructor() {
@@ -18,11 +18,11 @@ module Jarl {
 			return this.gameboard;
 		}
 		
-		public getPlayer1() : PlayerInterface {
+		public getPlayer1() : Player {
 			return this.player1;
 		}
 		
-		public getPlayer2() : PlayerInterface {
+		public getPlayer2() : Player {
 			return this.player2;
 		}
 		

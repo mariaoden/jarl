@@ -1,16 +1,8 @@
 module Jarl {
-	export interface PlayerInterface {
-		getAvailableTiles() : Array<TileInterface>; 
-		getStartupTiles() : Array<TileInterface>;
-		addLostTile(lostTile : TileInterface) : Number;
-		getLostTiles() : Array<TileInterface>;
-		drawTileFromBag() : TileInterface; //Draws a random Tile from the bag and adds it to availableTiles and returns the drawn tile
-		useTile(tile : TileInterface);
-	}
 	
-	export class Player implements PlayerInterface{
+	export class Player {
 		private lostTiles : Array<TileInterface>;
-		private startupTiles : Array<TileInterface>;
+		private tilesOnGameboard : Array<TileInterface>;
 		private tilesInBag : Array<TileInterface>;
 		private availableTiles : Array<TileInterface>;
 		
@@ -32,14 +24,10 @@ module Jarl {
 			this.freeman6 =  new FreemanTile(color_);
 			
 			this.tilesInBag = [this.freeman3, this.freeman4, this.freeman5, this.freeman6];
-			this.startupTiles = [this.jarlTile, this.freeman1, this.freeman2];
-			this.availableTiles = this.startupTiles;
+			this.availableTiles = [this.jarlTile, this.freeman1, this.freeman2];
+			this.tilesOnGameboard = [];
 			this.lostTiles = [];
 			
-		};
-		
-		public getStartupTiles() : Array<TileInterface> {
-			return this.startupTiles;
 		};
 		
 		public addLostTile(lostTile : TileInterface) : Number {
@@ -54,14 +42,28 @@ module Jarl {
 		public drawTileFromBag() : TileInterface {
 			var tile : TileInterface[];
 			var index = Math.floor(Math.random() * this.tilesInBag.length);
-			if (this.tilesInBag.length > 0) {
-				tile = this.tilesInBag.splice(index, 1); 
-				this.availableTiles.push(tile[0]);
-				return tile[0];
+			
+			// search through gameboard and lost tiles to make sure that the startup tiles are used before any new tile is drawn from the bag
+			var usingJarlTile : boolean  = (_.findWhere(this.tilesOnGameboard, this.jarlTile) != undefined);
+			var lostJarlTile : boolean  = (_.findWhere(this.lostTiles, this.jarlTile) != undefined);
+			var usingFreeman1 : boolean = (_.findWhere(this.tilesOnGameboard, this.freeman1) != undefined);
+			var lostFreeman1 : boolean = (_.findWhere(this.lostTiles, this.freeman1) != undefined);
+			var usingFreeman2 : boolean = (_.findWhere(this.tilesOnGameboard, this.freeman2) != undefined);
+			var lostFreeman2 : boolean = (_.findWhere(this.lostTiles, this.freeman2) != undefined);
+			
+			if ((usingJarlTile || lostJarlTile) && (usingFreeman1 || lostFreeman1) && (usingFreeman2 || lostFreeman2)) {
+				if (this.tilesInBag.length > 0) {
+					tile = this.tilesInBag.splice(index, 1); 
+					this.availableTiles.push(tile[0]);
+					return tile[0];
+				} else {
+					throw EmptyBagException();
+					return null; // is this needed???
+				}
 			} else {
-				throw EmptyBagException();
-				return null; // is this needed???
-			}						
+				throw NotUsedStartupTilesException();
+			}
+						
  
 		};
 		
@@ -71,12 +73,16 @@ module Jarl {
 		
 		public useTile(tile : TileInterface) {
 			var index : number;
-			index = _.findWhere(this.availableTiles, tile);
+			
+			index = _.findIndex(this.availableTiles,  function(item) {return item.getColor() == tile.getColor() && item.getTileType() == tile.getTileType() });
 			if (index != undefined) {
 				this.availableTiles.splice(index, 1);
+				this.tilesOnGameboard.push(tile);
 			} else {
 				throw TileNotAvailableException();
 			}
+			
+			
 		}
 	};
 	
@@ -88,5 +94,10 @@ module Jarl {
 	export function TileNotAvailableException() : string {
 		console.log('The searched tile is not available, either choose another tile or draw a new tile from bag');
 		return ('The searched tile is not available, either choose another tile or draw a new tile from bag');
+	}
+	
+	export function NotUsedStartupTilesException() : string {
+		console.log('The start up tiles must be used before a new tile can be drawn');
+		return ('The start up tiles must be used before a new tile can be drawn');
 	}
 };
