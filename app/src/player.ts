@@ -1,3 +1,5 @@
+/// <reference path="../../typings/underscore/underscore.d.ts" />
+
 module Jarl {
 	
 	export class Player {
@@ -31,7 +33,13 @@ module Jarl {
 		};
 		
 		public addLostTile(lostTile : TileInterface) : Number {
-			var nbrOfLostTiles : Number = this.lostTiles.push(lostTile);
+			this.lostTiles.push(lostTile);
+			
+			var index = _.findIndex(this.tilesOnGameboard,  function(item) {return item.getColor() == lostTile.getColor() && item.getTileType() == lostTile.getTileType() });
+			this.tilesOnGameboard.splice(index, 1);
+
+			var nbrOfLostTiles : Number = this.lostTiles.length;
+			
 			return nbrOfLostTiles;
 		};
 		
@@ -62,6 +70,7 @@ module Jarl {
 				}
 			} else {
 				throw NotUsedStartupTilesException();
+				return null;
 			}
 						
  

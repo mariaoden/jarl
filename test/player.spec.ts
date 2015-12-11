@@ -58,18 +58,18 @@ describe('start up tiles must be used before a new tile can be drawn', function(
 	it('no used tile', function () {
 		expect(player.drawTileFromBag()).toEqual(null);
 	});
-	player.useTile(Jarl.JarlTile);
+	player.useTile(new Jarl.JarlTile(Jarl.Color.White));
 	it('first tile', function() {
 		expect(player.drawTileFromBag()).toEqual(null);
 	})
-	player.useTile(Jarl.FreemanTile);
+	player.useTile(new Jarl.FreemanTile(Jarl.Color.White));
 	it('second tile', function() {
 		expect(player.drawTileFromBag()).toEqual(null);
 	})
-	player.useTile(Jarl.FreemanTile);
+	player.useTile(new Jarl.FreemanTile(Jarl.Color.White));
 	it('third tile', function() {
 		expect(player.drawTileFromBag()).toEqual(!null);
-	})
+	});
 	
 });
 
